@@ -5,7 +5,16 @@
   "main": "index.js",
   "scripts": {
     "build": "echo OK",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:chat": "cd apps/chatbot && npm run dev",
+    "build:chat": "cd apps/chatbot && npm run build",
+    "dev:admin": "cd apps/admin && npm run dev",
+    "build:admin": "cd apps/admin && npm run build",
+    "build:all": "npm run build:chat && npm run build:admin",
+    "emulators": "firebase emulators:start --only functions,firestore",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules"
   },
   "author": "",
   "license": "ISC"
