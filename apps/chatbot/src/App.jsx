@@ -3,6 +3,7 @@ import ParticleField from './components/ParticleField.jsx';
 import Chat from './components/Chat.jsx';
 import MissingUserId from './components/MissingUserId.jsx';
 import EndScreen from './components/EndScreen.jsx';
+import WelcomeScreen from './components/WelcomeScreen.jsx';
 import useUserId from './hooks/useUserId.js';
 import useConversation from './hooks/useConversation.js';
 
@@ -46,6 +47,11 @@ export default function App() {
 
 function ConversationView({ userId, conversationId, onRestart }) {
   const conv = useConversation({ userId, conversationId });
+  const [started, setStarted] = useState(false);
+
+  // The first assistant message arrives as soon as useConversation finishes
+  // its kickoff fetch — that's our "ready" signal for the welcome screen.
+  const firstMessageReady = conv.messages.some((m) => m.role === 'assistant');
 
   return (
     <div className="gx-shell">
@@ -55,10 +61,18 @@ function ConversationView({ userId, conversationId, onRestart }) {
           <span className="gx-mark-dot" />
           <span className="gx-mark-name">Chat</span>
         </div>
-        <div className="gx-mark-sub">conversación · {conv.questionCount}/{conv.maxQuestions}</div>
+        {started && !conv.complete && (
+          <div className="gx-mark-sub">conversación · {conv.questionCount}/{conv.maxQuestions}</div>
+        )}
       </header>
 
-      {conv.complete ? (
+      {!started ? (
+        <WelcomeScreen
+          onStart={() => setStarted(true)}
+          ready={firstMessageReady}
+          error={conv.error}
+        />
+      ) : conv.complete ? (
         <EndScreen onRestart={onRestart} />
       ) : (
         <Chat conv={conv} />
