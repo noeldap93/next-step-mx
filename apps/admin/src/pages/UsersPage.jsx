@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {
   listUsers, createUser, updateUser, deleteUser, listPrompts,
 } from '../lib/admin.js';
+import ConversationsModal from '../components/ConversationsModal.jsx';
 
 const CHATBOT_PATH = '/chat/';
 
@@ -17,6 +18,7 @@ export default function UsersPage({ user: currentUser }) {
   const [error, setError] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [viewingUser, setViewingUser] = useState(null);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -101,6 +103,9 @@ export default function UsersPage({ user: currentUser }) {
                   {u.note && <p className="ad-card-body">{u.note}</p>}
                   <div className="ad-card-actions">
                     <CopyLinkButton link={chatbotLink(u.id)} />
+                    <button type="button" className="ad-btn ad-btn--small" onClick={() => setViewingUser(u)}>
+                      Conversaciones
+                    </button>
                     <button type="button" className="ad-btn ad-btn--small" onClick={() => setEditingId(u.id)}>
                       Editar
                     </button>
@@ -122,6 +127,10 @@ export default function UsersPage({ user: currentUser }) {
           );
         })}
       </div>
+
+      {viewingUser && (
+        <ConversationsModal user={viewingUser} onClose={() => setViewingUser(null)} />
+      )}
     </section>
   );
 }

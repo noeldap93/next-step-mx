@@ -143,3 +143,23 @@ export async function updateUser(id, patch) {
 export async function deleteUser(id) {
   await deleteDoc(doc(db, 'users', id));
 }
+
+// ----- Conversations (read-only for the admin viewer) -----
+
+export async function listConversations(userId) {
+  const q = query(
+    collection(db, 'users', userId, 'conversations'),
+    orderBy('createdAt', 'desc'),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+export async function listMessages(userId, conversationId) {
+  const q = query(
+    collection(db, 'users', userId, 'conversations', conversationId, 'messages'),
+    orderBy('createdAt', 'asc'),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
