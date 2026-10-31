@@ -339,7 +339,7 @@ const ClosingSection = ({ onCTA }) => {
                 <a key={i} href="#" className="nl-footer-link">{c}</a>
               ))}
             </div>
-            <div className="nl-footer-legal">{f.legal} <span className="nl-footer-version">v1.0.1</span></div>
+            <div className="nl-footer-legal">{f.legal} <span className="nl-footer-version">v1.0.2</span></div>
           </div>
         </Reveal>
       </div>
