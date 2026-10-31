@@ -935,6 +935,7 @@ button { font-family: inherit; }
 .nl-footer-contact { display: flex; gap: 24px; }
 .nl-footer-link { transition: color .3s; }
 .nl-footer-link:hover { color: var(--nl-fg); }
+.nl-footer-version { margin-left: 12px; text-transform: none; opacity: .7; }
 
 /* ===== Floating CTA ===== */
 .nl-fab {
